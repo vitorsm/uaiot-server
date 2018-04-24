@@ -16,7 +16,7 @@ public class Thing {
 	
 	@Id
 	@Column(name = "imei", nullable = false)
-	private int imei;
+	private long imei;
 	
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -25,6 +25,13 @@ public class Thing {
 	private String description;
 	
 	@ManyToOne
-	@JoinColumn(name = "type_thing", nullable = false)
+	@JoinColumn(name = "type_thing_id", nullable = false)
 	private TypeThing typeThing;
+	
+	public Thing() {
+	}
+	
+	public Thing(int imei) {
+		this.imei = imei;
+	}
 }

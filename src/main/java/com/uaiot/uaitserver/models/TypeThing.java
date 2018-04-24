@@ -21,4 +21,11 @@ public class TypeThing {
 	
 	@Column(name = "name", nullable = false)
 	private String name;
+	
+	public TypeThing() {
+	}
+	
+	public TypeThing(int id) {
+		this.id = id;
+	}
 }

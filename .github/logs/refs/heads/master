@@ -1,2 +1,3 @@
 0000000000000000000000000000000000000000 33fd13ca8e85a72de398c293ad432e5105e1b477 Vítor Moreira <vitor.sousa.moreira@hotmail.com> 1524581616 -0300	clone: from https://github.com/vitorsm/uaiot-server.git
 33fd13ca8e85a72de398c293ad432e5105e1b477 63170a508e60cbaab1696075c4285e63702973de Vítor Moreira <vitor.sousa.moreira@hotmail.com> 1524585217 -0300	commit: implementing service and dao layer
+63170a508e60cbaab1696075c4285e63702973de 814c9dec2956ef1769f432cb0dd69250b3426c8c Vítor Moreira <vitor.sousa.moreira@hotmail.com> 1524596220 -0300	commit: implementing controller layer

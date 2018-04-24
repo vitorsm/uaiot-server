@@ -40,6 +40,9 @@ public class Alarm {
 	@Column(name = "inside", nullable = false)
 	private boolean inside;
 	
+	@Column(name = "active", nullable = false)
+	private boolean active;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "thing_imei", nullable = false, referencedColumnName = "imei")
 	private Thing thing;

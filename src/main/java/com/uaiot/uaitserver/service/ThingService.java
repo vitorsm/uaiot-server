@@ -50,7 +50,7 @@ public class ThingService implements ServiceServer<Thing>{
 		return dao.get(primaryKey, Thing.class);
 	}
 
-	public Thing findById(int id) throws DAOException, PermissionException {
+	public Thing findById(long id) throws DAOException, PermissionException {
 		
 		HashMap<String, Object> pk = new HashMap<String, Object>();
 		pk.put("id", id);

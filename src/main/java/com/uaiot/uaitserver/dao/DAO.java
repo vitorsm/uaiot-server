@@ -29,6 +29,10 @@ public abstract class DAO<T> {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
+	protected EntityManager getEntityManger() {
+		return this.entityManager;
+	}
+	
 	public void detach(T t) {
 		entityManager.detach(t);
 	}
@@ -63,6 +67,7 @@ public abstract class DAO<T> {
 		}
 		
 		Query q = entityManager.createQuery(hql);
+		
 		
 		List<String> columns = new ArrayList<String>();
 		String name;

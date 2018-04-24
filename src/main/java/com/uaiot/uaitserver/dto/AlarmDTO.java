@@ -12,6 +12,7 @@ public class AlarmDTO {
 	private float longitude;
 	private float radius;
 	private boolean inside;
+	private boolean active;
 	private ThingDTO thing;
 	
 }

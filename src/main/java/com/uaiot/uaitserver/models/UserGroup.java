@@ -39,4 +39,12 @@ public class UserGroup {
 			}
 	)
 	private List<PermissionClass> permissionClasses;
+	
+	
+	public UserGroup() {
+	}
+	
+	public UserGroup(int id) {
+		this.id = id;
+	}
 }

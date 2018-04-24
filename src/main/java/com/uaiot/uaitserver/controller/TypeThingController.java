@@ -16,16 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uaiot.uaitserver.dao.DAOException;
 import com.uaiot.uaitserver.dao.Filter;
-import com.uaiot.uaitserver.dto.ThingDTO;
+import com.uaiot.uaitserver.dto.TypeThingDTO;
 import com.uaiot.uaitserver.exceptions.PermissionException;
 import com.uaiot.uaitserver.facade.UaiotFacade;
-import com.uaiot.uaitserver.models.Thing;
 import com.uaiot.uaitserver.models.TypeThing;
 
 @RestController
-@RequestMapping(value = "serv/thing")
-public class ThingController {
-
+@RequestMapping(value = "serv/type-thing")
+public class TypeThingController {
 	@Autowired
 	private UaiotFacade uf;
 	
@@ -33,16 +31,16 @@ public class ThingController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ThingDTO> insert(@RequestBody ThingDTO thingDTO) throws DAOException {
+	public ResponseEntity<TypeThingDTO> insert(@RequestBody TypeThingDTO typeThingDTO) throws DAOException {
 		
 		try {
-			Thing thing = uf.map.thingMapper.mapToObj(thingDTO);
-			uf.thingService.insert(thing);
+			TypeThing typeThing = uf.map.typeThingMapper.mapToObj(typeThingDTO);
+			uf.typeThingService.insert(typeThing);
 			
-			return new ResponseEntity<ThingDTO>(uf.map.thingMapper.mapToDto(thing),
+			return new ResponseEntity<TypeThingDTO>(uf.map.typeThingMapper.mapToDto(typeThing),
 					HttpStatus.OK);
 		} catch (PermissionException ex) {
-			return new ResponseEntity<ThingDTO>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<TypeThingDTO>(HttpStatus.FORBIDDEN);
 		}
 		
 	}
@@ -51,16 +49,16 @@ public class ThingController {
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ThingDTO> update(@RequestBody ThingDTO thingDTO) throws DAOException {
+	public ResponseEntity<TypeThingDTO> update(@RequestBody TypeThingDTO typeThingDTO) throws DAOException {
 		
 		try {
-			Thing thing = uf.map.thingMapper.mapToObj(thingDTO);
-			uf.thingService.update(thing);
+			TypeThing typeThing = uf.map.typeThingMapper.mapToObj(typeThingDTO);
+			uf.typeThingService.update(typeThing);
 			
-			return new ResponseEntity<ThingDTO>(uf.map.thingMapper.mapToDto(thing),
+			return new ResponseEntity<TypeThingDTO>(uf.map.typeThingMapper.mapToDto(typeThing),
 					HttpStatus.OK);
 		} catch (PermissionException ex) {
-			return new ResponseEntity<ThingDTO>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<TypeThingDTO>(HttpStatus.FORBIDDEN);
 		}
 	}
 	
@@ -68,43 +66,39 @@ public class ThingController {
 			value = "/{id}",
 			method = RequestMethod.DELETE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ThingDTO> delete(@PathVariable("id") int thingImei) throws DAOException {
+	public ResponseEntity<TypeThingDTO> delete(@PathVariable("id") int typeThingId) throws DAOException {
 		
 		try {
-			Thing thing = uf.thingService.findById(thingImei);
-			uf.thingService.delete(thing);
+			TypeThing typeThing = uf.typeThingService.findById(typeThingId);
+			uf.typeThingService.delete(typeThing);
 			
-			return new ResponseEntity<ThingDTO>(uf.map.thingMapper.mapToDto(thing),
+			return new ResponseEntity<TypeThingDTO>(uf.map.typeThingMapper.mapToDto(typeThing),
 					HttpStatus.OK);
 		} catch (PermissionException ex) {
-			return new ResponseEntity<ThingDTO>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<TypeThingDTO>(HttpStatus.FORBIDDEN);
 		}
 	}
 	
 	@RequestMapping(
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ThingDTO>> get(@RequestParam(required = false) Integer thingImei,
-			@RequestParam(required = false) Integer typeThingId) throws DAOException {
+	public ResponseEntity<List<TypeThingDTO>> get(@RequestParam(required = false) Integer typeThingId) throws DAOException {
 		
 		try {
-			List<Thing> things = new ArrayList<Thing>();
+			List<TypeThing> typesThing = new ArrayList<TypeThing>();
 			
-			if (thingImei != null) {
-				Thing thing = uf.thingService.findById(thingImei);
-				things.add(thing);
+			if (typeThingId != null) {
+				TypeThing typeThing = uf.typeThingService.findById(typeThingId);
+				typesThing.add(typeThing);
 			} else {
 				List<Filter> filters = new ArrayList<Filter>();
-				if (typeThingId != null) {
-					Filter<TypeThing> fTThing = new Filter<TypeThing>("typeThing", new TypeThing(typeThingId));	
-					filters.add(fTThing);
-				}
-				things = uf.thingService.get(filters);
+				typesThing = uf.typeThingService.get(filters);
 			}
 			
-			return new ResponseEntity<List<ThingDTO>>(uf.map.thingMapper.mapToDto(things), HttpStatus.OK);
+			return new ResponseEntity<List<TypeThingDTO>>(uf.map.typeThingMapper.mapToDto(typesThing),
+					HttpStatus.OK);
 		} catch (PermissionException ex) {
-			return new ResponseEntity<List<ThingDTO>>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<List<TypeThingDTO>>(HttpStatus.FORBIDDEN);
 		}
 	}
 }
