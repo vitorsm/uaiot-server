@@ -16,7 +16,7 @@ public class Thing {
 	
 	@Id
 	@Column(name = "imei", nullable = false)
-	private long imei;
+	private long id;
 	
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -31,7 +31,7 @@ public class Thing {
 	public Thing() {
 	}
 	
-	public Thing(int imei) {
-		this.imei = imei;
+	public Thing(long imei) {
+		this.id = imei;
 	}
 }

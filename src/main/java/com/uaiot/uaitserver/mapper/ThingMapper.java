@@ -19,7 +19,7 @@ public class ThingMapper extends Mapper<Thing, ThingDTO> {
 	public Thing mapToObj(ThingDTO dto) throws PermissionException {
 		
 		try {
-			Thing thing = uf.thingService.findById(dto.getImei());
+			Thing thing = uf.thingService.findById(dto.getId());
 			
 			if (thing == null) {
 				thing = uf.map.modelMapper.map(dto, Thing.class);

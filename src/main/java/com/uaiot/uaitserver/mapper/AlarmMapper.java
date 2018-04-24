@@ -29,7 +29,7 @@ public class AlarmMapper extends Mapper<Alarm, AlarmDTO>{
 			}
 			
 			if (dto.getThing() != null)
-				alarm.setThing(uf.thingService.findById(dto.getThing().getImei()));
+				alarm.setThing(uf.thingService.findById(dto.getThing().getId()));
 			
 			return alarm;
 		} catch (DAOException ex) {

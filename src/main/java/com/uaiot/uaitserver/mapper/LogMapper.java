@@ -28,7 +28,7 @@ public class LogMapper extends Mapper<Log, LogDTO>{
 			}
 			
 			if (dto.getThing() != null)
-				log.setThing(uf.thingService.findById(dto.getThing().getImei()));
+				log.setThing(uf.thingService.findById(dto.getThing().getId()));
 			
 			return log;	
 		} catch (DAOException ex) {
