@@ -1,5 +1,6 @@
 package com.uaiot.uaitserver.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,9 +45,16 @@ public class AlarmService implements ServiceServer<Alarm>{
 	}
 
 	@Override
-	public User get(Map<String, Object> primaryKey) throws DAOException, PermissionException {
+	public Alarm get(Map<String, Object> primaryKey) throws DAOException, PermissionException {
 		
 		return dao.get(primaryKey, Alarm.class);
 	}
 
+	public Alarm findById(int id) throws DAOException, PermissionException {
+		
+		HashMap<String, Object> pk = new HashMap<String, Object>();
+		pk.put("id", id);
+		
+		return this.get(pk);
+	}
 }

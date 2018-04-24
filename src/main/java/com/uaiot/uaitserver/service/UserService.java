@@ -1,5 +1,6 @@
 package com.uaiot.uaitserver.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,4 +49,11 @@ public class UserService implements ServiceServer<User>{
 		return dao.get(primaryKey, User.class);
 	}
 
+	public User findById(int id) throws DAOException, PermissionException {
+		
+		HashMap<String, Object> pk = new HashMap<String, Object>();
+		pk.put("id", id);
+		
+		return this.get(pk);
+	}
 }
