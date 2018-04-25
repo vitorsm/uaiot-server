@@ -1,6 +1,8 @@
 package com.uaiot.uaitserver.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uaiot.uaitserver.dao.DAOException;
 import com.uaiot.uaitserver.dao.Filter;
+import com.uaiot.uaitserver.dto.CoordinateDTO;
 import com.uaiot.uaitserver.dto.LogDTO;
 import com.uaiot.uaitserver.exceptions.PermissionException;
 import com.uaiot.uaitserver.facade.UaiotFacade;
-import com.uaiot.uaitserver.models.Coordinate;
 import com.uaiot.uaitserver.models.Log;
 import com.uaiot.uaitserver.models.Thing;
 import com.uaiot.uaitserver.models.TypeThing;
@@ -37,8 +39,17 @@ public class LogController {
 	public ResponseEntity<LogDTO> insert(@RequestBody LogDTO logDTO) throws DAOException {
 		
 		try {
+			if (logDTO.getTime() == null) {
+				logDTO.setTime(new Date(System.currentTimeMillis()));
+			}
+			
 			Log log = uf.map.logMapper.mapToObj(logDTO);
 			uf.logService.insert(log);
+			
+			log.getThing().setLatitude(logDTO.getLatitude());
+			log.getThing().setLongitude(logDTO.getLongitude());
+			
+			uf.thingService.update(log.getThing());
 			
 			return new ResponseEntity<LogDTO>(uf.map.logMapper.mapToDto(log),
 					HttpStatus.OK);
@@ -51,7 +62,7 @@ public class LogController {
 	@RequestMapping(
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<LogDTO>> get(@RequestParam(required = false) Integer thingImei,
+	public ResponseEntity<List<LogDTO>> get(@RequestParam(required = false) Long thingImei,
 			@RequestParam(required = false) Integer typeThingId) throws DAOException {
 		
 		try {
@@ -80,15 +91,35 @@ public class LogController {
 			value = "current",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Coordinate>> currentPosition(@RequestParam(required = false) Integer thingImei,
-			@RequestParam(required = false) Integer typeThingId) {
+	public ResponseEntity<List<CoordinateDTO>> currentPosition(@RequestParam(required = false) Long thingImei,
+			@RequestParam(required = false) Integer typeThingId) throws DAOException, PermissionException {
 		
-//		try {
-//			return new ResponseEntity<List<Coordinate>>(uf.map.logMapper.mapToDto(logs), HttpStatus.OK);
-//		} catch (PermissionException ex) {
-//			return new ResponseEntity<List<Coordinate>>(HttpStatus.FORBIDDEN);
-//		}
+		List<Thing> things = null;
 		
-		return null;
+		if (thingImei != null) {
+			Thing t = uf.thingService.findById(thingImei);
+			if (t != null)
+				things = Arrays.asList(t);
+		} else {
+			List<Filter> filters = new ArrayList<Filter>();
+			if (typeThingId != null) {
+				Filter<TypeThing> fTThing = new Filter<TypeThing>("typeThing", new TypeThing(typeThingId));
+				filters.add(fTThing);
+			}
+			things = uf.thingService.get(filters);
+		}
+		
+		List<CoordinateDTO> coordinates = new ArrayList<CoordinateDTO>();
+		for (Thing thing : things) {
+			if (thing.getLatitude() != null && thing.getLongitude() != null) {
+				CoordinateDTO coordinate = new CoordinateDTO();
+				coordinate.setLatitude(thing.getLatitude());
+				coordinate.setLongitude(thing.getLongitude());
+				coordinate.setThing(uf.map.thingMapper.mapToDto(thing));
+				coordinates.add(coordinate);
+			}
+		}
+		
+		return new ResponseEntity<List<CoordinateDTO>>(coordinates, HttpStatus.OK);
 	}
 }

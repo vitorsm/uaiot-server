@@ -17,6 +17,9 @@ public class MapperFacade {
 	public AlarmMapper alarmMapper;
 	
 	@Autowired
+	public CoordinateMapper coordinateMapper;
+	
+	@Autowired
 	public LogMapper logMapper;
 	
 	@Autowired

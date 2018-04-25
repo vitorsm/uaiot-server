@@ -28,6 +28,12 @@ public class Thing {
 	@JoinColumn(name = "type_thing_id", nullable = false)
 	private TypeThing typeThing;
 	
+	@Column(name = "latitude", nullable = true)
+	private Float latitude;
+	
+	@Column(name = "longitude", nullable = true)
+	private Float longitude;
+	
 	public Thing() {
 	}
 	
